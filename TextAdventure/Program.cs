@@ -14,6 +14,9 @@ namespace TextAdventure
                 if (hero.Location == "newgame")
                 {
                     NewGame(hero);
+                } else if (hero.Location == "tableroom")
+                {
+                    TableRoom(hero);
                 } else
                 {
                   Console.Error.WriteLine($"You forgot to implement '{hero.Location}'!");  
@@ -48,9 +51,15 @@ namespace TextAdventure
             Console.WriteLine("You can only pick up one of these items");
 
             string pickedUpItem = Ask("Which one do you want to pick up?");
+            while (pickedUpItem != "key" && pickedUpItem != "knife" && pickedUpItem != "none")
+            {
+                pickedUpItem = Ask("Not an option, please try again: ");
+            }
             
             hero.Items.Add(pickedUpItem);
+            Console.Write($"You pick up the {pickedUpItem}.");
 
+            hero.Location = "corridor";
         }
         
         static string Ask(string question)
@@ -59,7 +68,7 @@ namespace TextAdventure
             do 
             {
                 Console.WriteLine(question);
-                response = Console.ReadLine().Trim();
+                response = Console.ReadLine().Trim().ToLower();
             } while (response == "");
             return response;
         }
