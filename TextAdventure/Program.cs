@@ -48,6 +48,7 @@ namespace TextAdventure
             Console.WriteLine("You can only pick up one of these items");
 
             string pickedUpItem = Ask("Which one do you want to pick up?");
+            
             hero.Items.Add(pickedUpItem);
 
         }
