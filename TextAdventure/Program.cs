@@ -64,7 +64,26 @@ namespace TextAdventure
 
         static void Corridor(Hero hero)
         {
+            Console.WriteLine("You exit the room and find yourself standing in a dark " + 
+            "hallway.");
+            Console.WriteLine("You can either enter another room on your right" + 
+            "side, or continue down the hallway on your left.");
 
+            string rightOrLeft = Ask("Do you want to go left or right?");
+
+            while (rightOrLeft != "right" && rightOrLeft != "left")
+            {
+                 rightOrLeft = Ask("That is not possible, please try again:");
+            }
+
+            if (rightOrLeft == "right" && hero.Items.Contains("key"))
+            {
+                hero.Location = "lockedroom";
+                hero.Items.Remove("Key");   
+            }else
+            {
+                hero.Location = "thirdroom";
+            }
         }
 
         static void LockedRoom(Hero hero)
@@ -101,7 +120,7 @@ namespace TextAdventure
         {
 
         }
-        
+
         static string Ask(string question)
         {
             string response;
