@@ -61,6 +61,46 @@ namespace TextAdventure
 
             hero.Location = "corridor";
         }
+
+        static void Corridor(Hero hero)
+        {
+
+        }
+
+        static void LockedRoom(Hero hero)
+        {
+
+        }
+        
+        static void ThirdRoom(Hero hero)
+        {
+
+        }
+
+        static void BackOutside(Hero hero)
+        {
+
+        }
+
+        static void BossFight(Hero hero)
+        {
+
+        }
+
+        static void Win (Hero hero)
+        {
+
+        }
+
+        static void Lose (Hero hero)
+        {
+
+        }
+
+        static void GameOver (Hero hero)
+        {
+
+        }
         
         static string Ask(string question)
         {
