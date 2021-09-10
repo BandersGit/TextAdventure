@@ -183,47 +183,13 @@ namespace TextAdventure
 
         static void BossFight(Hero hero)
         {
-            if (hero.Items.Contains("shinysword"))
-            {
-                hero.Damage = 100;
-            }else if (hero.Items.Contains("knife"))
-            {
-                hero.Damage = 75;
-            }
-
-            if (hero.Items.Contains("blessedamulet"))
-            {
-                System.Console.WriteLine("The necklace you picked up suddenly starts to shine.");
-                System.Console.WriteLine("Your body feels rejuvenated! (Health increased to 120)");
-                hero.Health = 120;
-            }else if (hero.Items.Contains("cursedamulet"))
-            {
-                System.Console.WriteLine("The necklace you picked up suddenly starts burn into your chest.");
-                System.Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
-                hero.Health = 80;
-            }
-
-            Console.Read();
-            Console.Clear();
+            ItemEffect(hero);
 
             Enemy enemy = new Enemy();
-            string enemyMove = "";
 
             while (hero.Health > 0 && enemy.Health > 0)
             {
-                if (RollD6() <= 2)
-                {
-                    System.Console.WriteLine("The Minotaur swings at your head!");
-                    enemyMove = "headattack";
-                }else if (RollD6() <= 4 && RollD6() >= 3)
-                {
-                    System.Console.WriteLine("The Minotaur strikes at your legs!");
-                    enemyMove = "legattack";
-                }else if (RollD6() >= 5)
-                {
-                    System.Console.WriteLine("The Minotaur lashes out towards your torso!");
-                    enemyMove = "torsoattack";
-                }
+                EnemyMove(enemy);
 
                 System.Console.WriteLine("You can either parry, jump or duck.");
                 string action = Ask("What do you want to do?");
@@ -235,12 +201,10 @@ namespace TextAdventure
 
                 if (action == "parry")
                 {
-                    if (enemyMove == "torsoattack")
+                    if (enemy.enemyMove == "torsoattack")
                     {
                         System.Console.WriteLine("You successfully parried the Minotaurs attack!");
-                        Console.Read();
-
-
+                        
                     }else
                     {
                         
@@ -248,10 +212,25 @@ namespace TextAdventure
                     
                 }else if (action == "dodge")
                 {
+                    if (enemy.enemyMove == "headattack")
+                    {
+                        System.Console.WriteLine("You dodged the Minotaurs swing!");
+                        
+                    }else
+                    {
+                        
+                    }
                     
                 }else
                 {
-                    
+                    if (enemy.enemyMove == "legattack")
+                    {
+                        System.Console.WriteLine("You jumped over the Minotaurs strike!");
+                        
+                    }else
+                    {
+                        
+                    }
                 }
             }
 
@@ -311,6 +290,53 @@ namespace TextAdventure
             Random random = new Random();
             int roll = random.Next(1,7);
             return roll;
+        }
+
+        static void ItemEffect(Hero hero)
+        {
+            if (hero.Items.Contains("shinysword"))
+            {
+                hero.Damage = 100;
+            }else if (hero.Items.Contains("knife"))
+            {
+                hero.Damage = 75;
+            }
+
+            if (hero.Items.Contains("blessedamulet"))
+            {
+                System.Console.WriteLine("The necklace you picked up suddenly starts to shine.");
+                Console.Read();
+                System.Console.WriteLine("Your body feels rejuvenated! (Health increased to 120)");
+                hero.Health = 120;
+            }else if (hero.Items.Contains("cursedamulet"))
+            {
+                System.Console.WriteLine("The necklace you picked up suddenly starts burn into your chest.");
+                Console.Read();
+                System.Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
+                hero.Health = 80;
+            }
+
+            Console.Read();
+            Console.Clear();
+        }
+
+        static void EnemyMove(Enemy enemy)
+        {
+            if (RollD6() <= 2)
+                {
+                    System.Console.WriteLine("The Minotaur swings at your head!");
+                    enemy.enemyMove = "headattack";
+                }else if (RollD6() <= 4 && RollD6() >= 3)
+                {
+                    System.Console.WriteLine("The Minotaur strikes at your legs!");
+                    enemy.enemyMove = "legattack";
+                }else if (RollD6() >= 5)
+                {
+                    System.Console.WriteLine("The Minotaur lashes out towards your torso!");
+                    enemy.enemyMove = "torsoattack";
+                }
+
+                Console.Read();
         }
     }
 }

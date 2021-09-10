@@ -6,5 +6,6 @@ namespace TextAdventure
     {
         public int Health = 200;
         public int Damage = 20;
+        public string enemyMove = "";
     }
 }
