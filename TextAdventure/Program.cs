@@ -86,7 +86,7 @@ namespace TextAdventure
             Console.Clear();
             Console.WriteLine($"You pick up the {pickedUpItem}.");
 
-            Console.Read();
+            Console.ReadLine();
 
             hero.Location = "corridor";
         }
@@ -105,13 +105,14 @@ namespace TextAdventure
 
             while (rightOrLeft != "right" && rightOrLeft != "left")
             {
-                 rightOrLeft = Ask("That is not possible, please try again:");
+                rightOrLeft = Ask("That is not possible, please try again:");
             }
 
             while (rightOrLeft == "right" && !hero.Items.Contains("key"))
             {
-                 Console.WriteLine("The door is locked! Try another way.");
-                 rightOrLeft = Ask("Do you want to go left or right?");
+                Console.Clear();
+                Console.WriteLine("The door is locked! Try another way.");
+                rightOrLeft = Ask("Do you want to go left or right?");
             }
 
             if (rightOrLeft == "right" && hero.Items.Contains("key"))
@@ -140,13 +141,13 @@ namespace TextAdventure
 
             hero.Location = "thirdroom";
 
-            Console.Read();
+            Console.ReadLine();
         }
         
         static void ThirdRoom(Hero hero)
         {
             Console.WriteLine("You continued down the hallway...");
-            Console.Read();
+            Console.ReadLine();
             Console.Clear();
             Console.WriteLine("On the floor before you lies a lifeless corpse.");
             Console.WriteLine("Its hand is clasped around something shiny.");
@@ -168,7 +169,7 @@ namespace TextAdventure
 
             Console.WriteLine("You leave the corpse an continue into the next room.");
 
-            Console.Read();
+            Console.ReadLine();
 
             hero.Location = "backoutside";
         }
@@ -176,7 +177,7 @@ namespace TextAdventure
         static void BackOutside(Hero hero)
         {
             Console.WriteLine("As you open the door to the next room, a Minotaur charges through and knocks you to the ground!");
-            Console.Read();
+            Console.ReadLine();
             hero.Location = "bossfight";
         }
 
@@ -304,38 +305,38 @@ namespace TextAdventure
             if (hero.Items.Contains("blessedamulet"))
             {
                 Console.WriteLine("The necklace you picked up suddenly starts to shine.");
-                Console.Read();
+                Console.ReadLine();
                 Console.WriteLine("Your body feels rejuvenated! (Health increased to 120)");
                 hero.Health = 120;
             }else if (hero.Items.Contains("cursedamulet"))
             {
                 Console.WriteLine("The necklace you picked up suddenly starts burn into your chest.");
-                Console.Read();
+                Console.ReadLine();
                 Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
                 hero.Health = 80;
             }
 
-            Console.Read();
+            Console.ReadLine();
             Console.Clear();
         }
 
         static void EnemyMove(Enemy enemy)
         {
             if (RollD6() <= 2)
-                {
-                    Console.WriteLine("The Minotaur swings at your head!");
-                    enemy.Move = "headattack";
-                }else if (RollD6() <= 4 && RollD6() >= 3)
-                {
-                    Console.WriteLine("The Minotaur strikes at your legs!");
-                    enemy.Move = "legattack";
-                }else if (RollD6() >= 5)
-                {
-                    Console.WriteLine("The Minotaur lashes out towards your torso!");
-                    enemy.Move = "torsoattack";
-                }
+            {
+                Console.WriteLine("The Minotaur swings at your head!");
+                enemy.Move = "headattack";
+            }else if (RollD6() <= 4 && RollD6() >= 3)
+            {
+                Console.WriteLine("The Minotaur strikes at your legs!");
+                enemy.Move = "legattack";
+            }else if (RollD6() >= 5)
+            {
+                Console.WriteLine("The Minotaur lashes out towards your torso!");
+                enemy.Move = "torsoattack";
+            }
 
-                Console.Read();
+            Console.ReadLine();
         }
     }
 }
