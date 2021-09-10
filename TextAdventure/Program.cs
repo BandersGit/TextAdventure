@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using System;
+﻿using System;
 
 namespace TextAdventure
 {
@@ -191,7 +190,7 @@ namespace TextAdventure
             {
                 EnemyMove(enemy);
 
-                System.Console.WriteLine("You can either parry, jump or duck.");
+                Console.WriteLine("You can either parry, jump or duck.");
                 string action = Ask("What do you want to do?");
 
                 while (action != "parry" && action != "jump" && action != "duck")
@@ -201,9 +200,9 @@ namespace TextAdventure
 
                 if (action == "parry")
                 {
-                    if (enemy.enemyMove == "torsoattack")
+                    if (enemy.Move == "torsoattack")
                     {
-                        System.Console.WriteLine("You successfully parried the Minotaurs attack!");
+                        Console.WriteLine("You successfully parried the Minotaurs attack!");
                         
                     }else
                     {
@@ -212,9 +211,9 @@ namespace TextAdventure
                     
                 }else if (action == "dodge")
                 {
-                    if (enemy.enemyMove == "headattack")
+                    if (enemy.Move == "headattack")
                     {
-                        System.Console.WriteLine("You dodged the Minotaurs swing!");
+                        Console.WriteLine("You dodged the Minotaurs swing!");
                         
                     }else
                     {
@@ -223,9 +222,9 @@ namespace TextAdventure
                     
                 }else
                 {
-                    if (enemy.enemyMove == "legattack")
+                    if (enemy.Move == "legattack")
                     {
-                        System.Console.WriteLine("You jumped over the Minotaurs strike!");
+                        Console.WriteLine("You jumped over the Minotaurs strike!");
                         
                     }else
                     {
@@ -304,15 +303,15 @@ namespace TextAdventure
 
             if (hero.Items.Contains("blessedamulet"))
             {
-                System.Console.WriteLine("The necklace you picked up suddenly starts to shine.");
+                Console.WriteLine("The necklace you picked up suddenly starts to shine.");
                 Console.Read();
-                System.Console.WriteLine("Your body feels rejuvenated! (Health increased to 120)");
+                Console.WriteLine("Your body feels rejuvenated! (Health increased to 120)");
                 hero.Health = 120;
             }else if (hero.Items.Contains("cursedamulet"))
             {
-                System.Console.WriteLine("The necklace you picked up suddenly starts burn into your chest.");
+                Console.WriteLine("The necklace you picked up suddenly starts burn into your chest.");
                 Console.Read();
-                System.Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
+                Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
                 hero.Health = 80;
             }
 
@@ -324,16 +323,16 @@ namespace TextAdventure
         {
             if (RollD6() <= 2)
                 {
-                    System.Console.WriteLine("The Minotaur swings at your head!");
-                    enemy.enemyMove = "headattack";
+                    Console.WriteLine("The Minotaur swings at your head!");
+                    enemy.Move = "headattack";
                 }else if (RollD6() <= 4 && RollD6() >= 3)
                 {
-                    System.Console.WriteLine("The Minotaur strikes at your legs!");
-                    enemy.enemyMove = "legattack";
+                    Console.WriteLine("The Minotaur strikes at your legs!");
+                    enemy.Move = "legattack";
                 }else if (RollD6() >= 5)
                 {
-                    System.Console.WriteLine("The Minotaur lashes out towards your torso!");
-                    enemy.enemyMove = "torsoattack";
+                    Console.WriteLine("The Minotaur lashes out towards your torso!");
+                    enemy.Move = "torsoattack";
                 }
 
                 Console.Read();
