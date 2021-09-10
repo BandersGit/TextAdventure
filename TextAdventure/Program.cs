@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Xml;
+using System;
 
 namespace TextAdventure
 {
@@ -86,7 +87,7 @@ namespace TextAdventure
             Console.Clear();
             Console.WriteLine($"You pick up the {pickedUpItem}.");
 
-            Console.ReadLine();
+            Console.Read();
 
             hero.Location = "corridor";
         }
@@ -140,25 +141,124 @@ namespace TextAdventure
 
             hero.Location = "thirdroom";
 
-            Console.ReadLine();
+            Console.Read();
         }
         
         static void ThirdRoom(Hero hero)
         {
-            Console.WriteLine("You continued down the hallway");
+            Console.WriteLine("You continued down the hallway...");
+            Console.Read();
+            Console.Clear();
+            Console.WriteLine("On the floor before you lies a lifeless corpse.");
+            Console.WriteLine("Its hand is clasped around something shiny.");
+
+            if (AskYesOrNo("Do you want to loot the corpse?"))
+            {
+                Console.WriteLine("You pick up an old silver necklace");
+
+                if (RollD6() <= 3)
+                {
+                    Console.WriteLine("A warm feeling spreads over your body");
+                    hero.Items.Add("blessedamulet");
+                }else
+                {
+                    Console.WriteLine("A cold shiver runs down your spine");
+                    hero.Items.Add("cursedamulet");
+                }
+            }
+
+            Console.WriteLine("You leave the corpse an continue into the next room.");
+
+            Console.Read();
 
             hero.Location = "backoutside";
-
-            Console.ReadLine();
         }
 
         static void BackOutside(Hero hero)
         {
+            Console.WriteLine("As you open the door to the next room, a Minotaur charges through and knocks you to the ground!");
+            Console.Read();
             hero.Location = "bossfight";
         }
 
         static void BossFight(Hero hero)
         {
+            if (hero.Items.Contains("shinysword"))
+            {
+                hero.Damage = 100;
+            }else if (hero.Items.Contains("knife"))
+            {
+                hero.Damage = 75;
+            }
+
+            if (hero.Items.Contains("blessedamulet"))
+            {
+                System.Console.WriteLine("The necklace you picked up suddenly starts to shine.");
+                System.Console.WriteLine("Your body feels rejuvenated! (Health increased to 120)");
+                hero.Health = 120;
+            }else if (hero.Items.Contains("cursedamulet"))
+            {
+                System.Console.WriteLine("The necklace you picked up suddenly starts burn into your chest.");
+                System.Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
+                hero.Health = 80;
+            }
+
+            Console.Read();
+            Console.Clear();
+
+            Enemy enemy = new Enemy();
+            string enemyMove = "";
+
+            while (hero.Health > 0 && enemy.Health > 0)
+            {
+                if (RollD6() <= 2)
+                {
+                    System.Console.WriteLine("The Minotaur swings at your head!");
+                    enemyMove = "headattack";
+                }else if (RollD6() <= 4 && RollD6() >= 3)
+                {
+                    System.Console.WriteLine("The Minotaur strikes at your legs!");
+                    enemyMove = "legattack";
+                }else if (RollD6() >= 5)
+                {
+                    System.Console.WriteLine("The Minotaur lashes out towards your torso!");
+                    enemyMove = "torsoattack";
+                }
+
+                System.Console.WriteLine("You can either parry, jump or duck.");
+                string action = Ask("What do you want to do?");
+
+                while (action != "parry" && action != "jump" && action != "duck")
+                {
+                    action = Ask("That is not not an option, please try again:");
+                }
+
+                if (action == "parry")
+                {
+                    if (enemyMove == "torsoattack")
+                    {
+                        System.Console.WriteLine("You successfully parried the Minotaurs attack!");
+                        Console.Read();
+
+
+                    }else
+                    {
+                        
+                    }
+                    
+                }else if (action == "dodge")
+                {
+                    
+                }else
+                {
+                    
+                }
+            }
+
+
+
+
+
             hero.Location = "win";
             hero.Location = "lose";
         }
@@ -204,6 +304,13 @@ namespace TextAdventure
                         return false;
                 }
             }
+        }
+
+        static int RollD6()
+        {
+            Random random = new Random();
+            int roll = random.Next(1,7);
+            return roll;
         }
     }
 }
