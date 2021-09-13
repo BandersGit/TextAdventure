@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.InteropServices;
-using System.Dynamic;
-using System;
+﻿using System;
 
 namespace TextAdventure
 {
@@ -10,6 +7,10 @@ namespace TextAdventure
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Text Adventure!");
+            Console.WriteLine("");
+            Console.WriteLine("Instructions: press ENTER when you want to proceed, except when there is a question, " + 
+                                     "you must then answer that question with an appropriate answer.");
+            Console.ReadLine();
 
             Hero hero = new Hero();
             while (hero.Location != "quit")
@@ -215,11 +216,11 @@ namespace TextAdventure
                         
                     }else if(enemy.Move == "legattack")
                     {
-                        System.Console.WriteLine($"The Minotaur hits you right in your shins! (You take {enemy.Damage} damage)");
+                        Console.WriteLine($"The Minotaur hits you right in your shins! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }else if (enemy.Move == "headattack")
                     {
-                        System.Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
+                        Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
                 }else if (action == "duck")
@@ -230,11 +231,11 @@ namespace TextAdventure
                         
                     }else if(enemy.Move == "legattack")
                     {
-                        System.Console.WriteLine($"The Minotaur hits you right in your shins! (You take {enemy.Damage} damage)");
+                        Console.WriteLine($"The Minotaur hits you right in your shins! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }else if (enemy.Move == "torsoattack")
                     {
-                        System.Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
+                        Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
                 }else if (action == "jump")
@@ -245,11 +246,11 @@ namespace TextAdventure
                         
                     }else if(enemy.Move == "torsoattack")
                     {
-                        System.Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
+                        Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }else if (enemy.Move == "headattack")
                     {
-                        System.Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
+                        Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
                 }
@@ -263,9 +264,9 @@ namespace TextAdventure
                     enemy.Health = 0;
                 }
 
-                System.Console.WriteLine($"You now have {hero.Health} HP!");
-                System.Console.WriteLine("");
-                System.Console.WriteLine($"The Minotaur now has {enemy.Health} HP!");
+                Console.WriteLine($"You now have {hero.Health} HP!");
+                Console.WriteLine("");
+                Console.WriteLine($"The Minotaur now has {enemy.Health} HP!");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -273,14 +274,14 @@ namespace TextAdventure
             if (hero.Health <= 0)
             {
                 Console.Clear();
-                System.Console.WriteLine("You bleed your last drop of blood, and you fall to the ground.");
+                Console.WriteLine("You bleed your last drop of blood, and you fall to the ground.");
                 Console.ReadLine();
 
                 hero.Location = "lose";
             }else if (enemy.Health <= 0)
             {
                 Console.Clear();
-                System.Console.WriteLine("You stabbed the Minotaur through the heart, its lifeless body falls to the ground.");
+                Console.WriteLine("You stabbed the Minotaur through the heart, its lifeless body falls to the ground.");
                 Console.ReadLine();
                 
                 hero.Location = "win";
@@ -290,14 +291,14 @@ namespace TextAdventure
 
         static void Win (Hero hero)
         {
-            System.Console.WriteLine("Congratulations! You slayed the Minotaur and got out of the house!");
+            Console.WriteLine("Congratulations! You slayed the Minotaur and got out of the house!");
             Console.ReadLine();
             hero.Location = "gameover";
         }
 
         static void Lose (Hero hero)
         {
-            System.Console.WriteLine("You got slain by the Minotaur and failed your quest...");
+            Console.WriteLine("You got slain by the Minotaur and failed your quest...");
             Console.ReadLine();
             hero.Location = "gameover";
         }
@@ -305,7 +306,7 @@ namespace TextAdventure
         static void GameOver (Hero hero)
         {
             Console.Clear();
-            System.Console.WriteLine("Game Over!");
+            Console.WriteLine("Game Over!");
             Console.ReadLine();
             hero.Location = "quit";
         }
@@ -340,6 +341,13 @@ namespace TextAdventure
             }
         }
 
+        static int RollD6()
+        {
+            Random random = new Random();
+            int roll = random.Next(1,7);
+            return roll;
+        }
+
         static void EnemyMove(Enemy enemy)
         {
             int attackChoice = RollD6();
@@ -358,13 +366,6 @@ namespace TextAdventure
                 enemy.Move = "torsoattack";
             }
             Console.ReadLine();
-        }
-
-        static int RollD6()
-        {
-            Random random = new Random();
-            int roll = random.Next(1,7);
-            return roll;
         }
 
         static void ItemEffect(Hero hero)
