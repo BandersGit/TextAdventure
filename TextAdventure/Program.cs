@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Linq;
+using System.Runtime.InteropServices;
 using System.Dynamic;
 using System;
 
@@ -71,11 +72,12 @@ namespace TextAdventure
             hero.Items.Add("woodensword");
 
             Console.WriteLine("You are equipped with a wooden sword, and your task " + 
-                              "is to slay the monster at the end of the adventure. ");
-            Console.WriteLine("");
+                              "is to slay the monster at the end of the adventure.");
+            Console.ReadLine();
+            Console.Clear();
             Console.WriteLine("In front of you is a stone table with two items on it, " + 
                               "a knife and a key.");
-            Console.WriteLine("");
+            Console.ReadLine();
             Console.WriteLine("You can only pick up one of these items.");
 
             string pickedUpItem = Ask("Which one do you want to pick up?");
@@ -87,7 +89,6 @@ namespace TextAdventure
             hero.Items.Add(pickedUpItem);
             Console.Clear();
             Console.WriteLine($"You pick up the {pickedUpItem}.");
-
             Console.ReadLine();
 
             hero.Location = "corridor";
@@ -131,6 +132,7 @@ namespace TextAdventure
         {
             Console.WriteLine("You had to use the key to get into the room. " +
                               "Inside the locked room you find a shiny sword!");
+            Console.ReadLine();
             if (AskYesOrNo("Do you want it instead of your wooden sword?"))
             {
                 Console.WriteLine("You picked up the shiny sword!");
@@ -153,25 +155,28 @@ namespace TextAdventure
             Console.Clear();
             Console.WriteLine("On the floor before you lies a lifeless corpse.");
             Console.WriteLine("Its hand is clasped around something shiny.");
+            Console.ReadLine();
 
             if (AskYesOrNo("Do you want to loot the corpse?"))
             {
                 Console.WriteLine("You pick up an old silver necklace");
-
+                Console.ReadLine();
                 if (RollD6() <= 3)
                 {
-                    Console.WriteLine("A warm feeling spreads over your body");
+                    Console.WriteLine("A warm feeling spreads over your body.");
                     hero.Items.Add("blessedamulet");
                 }else
                 {
-                    Console.WriteLine("A cold shiver runs down your spine");
+                    Console.WriteLine("A cold shiver runs down your spine.");
                     hero.Items.Add("cursedamulet");
                 }
             }
 
-            Console.WriteLine("You leave the corpse an continue into the next room.");
-
             Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("You leave the corpse an continue into the next room.");
+            Console.ReadLine();
+            Console.Clear();
 
             hero.Location = "backoutside";
         }
@@ -189,7 +194,7 @@ namespace TextAdventure
 
             Enemy enemy = new Enemy();
 
-            while (hero.Health >= 0 && enemy.Health >= 0)
+            while (hero.Health > 0 && enemy.Health > 0)
             {
                 EnemyMove(enemy);
 
@@ -208,64 +213,79 @@ namespace TextAdventure
                         Console.WriteLine($"You successfully parried the Minotaurs attack! (You deal {hero.Damage} damage)");
                         enemy.Health -= hero.Damage;
                         
-                    }else
+                    }else if(enemy.Move == "legattack")
                     {
-                        System.Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
+                        System.Console.WriteLine($"The Minotaur hits you right in your shins! (You take {enemy.Damage} damage)");
+                        hero.Health -= enemy.Damage;
+                    }else if (enemy.Move == "headattack")
+                    {
+                        System.Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
-                    
-                }else if (action == "dodge")
+                }else if (action == "duck")
                 {
                     if (enemy.Move == "headattack")
                     {
                         Console.WriteLine("You dodged the Minotaurs swing! (You take 0 damage)");
                         
-                    }else
+                    }else if(enemy.Move == "legattack")
                     {
-                        System.Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
+                        System.Console.WriteLine($"The Minotaur hits you right in your shins! (You take {enemy.Damage} damage)");
+                        hero.Health -= enemy.Damage;
+                    }else if (enemy.Move == "torsoattack")
+                    {
+                        System.Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
-                    
-                }else
+                }else if (action == "jump")
                 {
                     if (enemy.Move == "legattack")
                     {
                         Console.WriteLine("You jumped over the Minotaurs strike! (You take 0 damage)");
                         
-                    }else
+                    }else if(enemy.Move == "torsoattack")
                     {
-                        System.Console.WriteLine($"The Minotaur striked you right in your shins! (You take {enemy.Damage} damage)");
+                        System.Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
+                        hero.Health -= enemy.Damage;
+                    }else if (enemy.Move == "headattack")
+                    {
+                        System.Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
                 }
+                Console.ReadLine();
+                Console.Clear();
+                if (hero.Health < 0)
+                {
+                    hero.Health = 0;
+                }else if (enemy.Health < 0)
+                {
+                    enemy.Health = 0;
+                }
 
                 System.Console.WriteLine($"You now have {hero.Health} HP!");
-                System.Console.WriteLine($"The minotaur now has {enemy.Health} HP!");
-
+                System.Console.WriteLine("");
+                System.Console.WriteLine($"The Minotaur now has {enemy.Health} HP!");
                 Console.ReadLine();
+                Console.Clear();
             }
 
             if (hero.Health <= 0)
             {
                 Console.Clear();
-                
                 System.Console.WriteLine("You bleed your last drop of blood, and you fall to the ground.");
                 Console.ReadLine();
-                
+
                 hero.Location = "lose";
             }else if (enemy.Health <= 0)
             {
                 Console.Clear();
-
                 System.Console.WriteLine("You stabbed the Minotaur through the heart, its lifeless body falls to the ground.");
                 Console.ReadLine();
                 
                 hero.Location = "win";
             }
-
-
-
-            
+            Console.Clear();
         }
 
         static void Win (Hero hero)
@@ -287,7 +307,6 @@ namespace TextAdventure
             Console.Clear();
             System.Console.WriteLine("Game Over!");
             Console.ReadLine();
-
             hero.Location = "quit";
         }
 
@@ -299,6 +318,7 @@ namespace TextAdventure
                 Console.WriteLine(question);
                 response = Console.ReadLine().Trim().ToLower();
             } while (response == "");
+            Console.Clear();
             return response;
         }
 
@@ -306,7 +326,8 @@ namespace TextAdventure
         {
             while (true)
             {
-                string response = Ask(question).ToLower();
+                string response = Ask(question).ToLower().Trim();
+                Console.Clear();
 
                 switch (response)
                 {
@@ -336,7 +357,6 @@ namespace TextAdventure
                 Console.WriteLine("The Minotaur lashes out towards your torso!");
                 enemy.Move = "torsoattack";
             }
-
             Console.ReadLine();
         }
 
@@ -370,11 +390,8 @@ namespace TextAdventure
                 Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
                 hero.Health = 80;
             }
-
             Console.ReadLine();
             Console.Clear();
         }
-
-        
     }
 }
