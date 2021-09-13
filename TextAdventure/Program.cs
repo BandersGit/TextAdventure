@@ -8,8 +8,8 @@ namespace TextAdventure
         {
             Console.WriteLine("Welcome to Text Adventure!");
             Console.WriteLine("");
-            Console.WriteLine("Instructions: press ENTER when you want to proceed, except when there is a question, " + 
-                                     "you must then answer that question with an appropriate answer.");
+            Console.WriteLine("Instructions: press ENTER when you want to proceed, except when there is a question,");
+            Console.WriteLine("you must then answer that question with an appropriate answer.");
             Console.ReadLine();
 
             Hero hero = new Hero();
@@ -60,6 +60,7 @@ namespace TextAdventure
             do
             {
                 name = Ask("What is your name, adventurer? ");
+                Console.Clear();
             } while (!AskYesOrNo($"So, {name} is it?"));
 
             hero.Name = name;
@@ -131,16 +132,19 @@ namespace TextAdventure
 
         static void LockedRoom(Hero hero)
         {
+            Console.Clear();
             Console.WriteLine("You had to use the key to get into the room. " +
                               "Inside the locked room you find a shiny sword!");
             Console.ReadLine();
             if (AskYesOrNo("Do you want it instead of your wooden sword?"))
             {
+                Console.Clear();
                 Console.WriteLine("You picked up the shiny sword!");
                 hero.Items.Remove("woodensword");
                 hero.Items.Add("shinysword");
             }else
             {
+                Console.Clear();
                 Console.WriteLine("You kept your wooden sword.");
             }
 
@@ -151,6 +155,7 @@ namespace TextAdventure
         
         static void ThirdRoom(Hero hero)
         {
+            Console.Clear();
             Console.WriteLine("You continued down the hallway...");
             Console.ReadLine();
             Console.Clear();
@@ -160,6 +165,7 @@ namespace TextAdventure
 
             if (AskYesOrNo("Do you want to loot the corpse?"))
             {
+                Console.Clear();
                 Console.WriteLine("You pick up an old silver necklace");
                 Console.ReadLine();
                 if (RollD6() <= 3)
@@ -177,13 +183,13 @@ namespace TextAdventure
             Console.Clear();
             Console.WriteLine("You leave the corpse an continue into the next room.");
             Console.ReadLine();
-            Console.Clear();
 
             hero.Location = "backoutside";
         }
 
         static void BackOutside(Hero hero)
         {
+            Console.Clear();
             Console.WriteLine("As you open the door to the next room, a Minotaur charges through and knocks you to the ground!");
             Console.ReadLine();
             hero.Location = "bossfight";
@@ -197,6 +203,7 @@ namespace TextAdventure
 
             while (hero.Health > 0 && enemy.Health > 0)
             {
+                Console.Clear();
                 EnemyMove(enemy);
 
                 Console.WriteLine("You can either parry, jump or duck.");
@@ -206,7 +213,7 @@ namespace TextAdventure
                 {
                     action = Ask("That is not not an option, please try again:");
                 }
-
+                Console.Clear();
                 if (action == "parry")
                 {
                     if (enemy.Move == "torsoattack")
@@ -319,7 +326,6 @@ namespace TextAdventure
                 Console.WriteLine(question);
                 response = Console.ReadLine().Trim().ToLower();
             } while (response == "");
-            Console.Clear();
             return response;
         }
 
@@ -328,7 +334,6 @@ namespace TextAdventure
             while (true)
             {
                 string response = Ask(question).ToLower().Trim();
-                Console.Clear();
 
                 switch (response)
                 {
@@ -386,7 +391,7 @@ namespace TextAdventure
                 hero.Health = 120;
             }else if (hero.Items.Contains("cursedamulet"))
             {
-                Console.WriteLine("The necklace you picked up suddenly starts burn into your chest.");
+                Console.WriteLine("The necklace you picked up suddenly starts to burn into your chest.");
                 Console.ReadLine();
                 Console.WriteLine("Your body feels weaker! (Health decreased to 80)");
                 hero.Health = 80;
