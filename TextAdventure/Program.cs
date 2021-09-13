@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Runtime.InteropServices;
+using System.Dynamic;
+using System;
 
 namespace TextAdventure
 {
@@ -187,7 +189,7 @@ namespace TextAdventure
 
             Enemy enemy = new Enemy();
 
-            while (hero.Health > 0 && enemy.Health > 0)
+            while (hero.Health >= 0 && enemy.Health >= 0)
             {
                 EnemyMove(enemy);
 
@@ -203,57 +205,89 @@ namespace TextAdventure
                 {
                     if (enemy.Move == "torsoattack")
                     {
-                        Console.WriteLine("You successfully parried the Minotaurs attack!");
+                        Console.WriteLine($"You successfully parried the Minotaurs attack! (You deal {hero.Damage} damage)");
+                        enemy.Health -= hero.Damage;
                         
                     }else
                     {
-                        
+                        System.Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
+                        hero.Health -= enemy.Damage;
                     }
                     
                 }else if (action == "dodge")
                 {
                     if (enemy.Move == "headattack")
                     {
-                        Console.WriteLine("You dodged the Minotaurs swing!");
+                        Console.WriteLine("You dodged the Minotaurs swing! (You take 0 damage)");
                         
                     }else
                     {
-                        
+                        System.Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
+                        hero.Health -= enemy.Damage;
                     }
                     
                 }else
                 {
                     if (enemy.Move == "legattack")
                     {
-                        Console.WriteLine("You jumped over the Minotaurs strike!");
+                        Console.WriteLine("You jumped over the Minotaurs strike! (You take 0 damage)");
                         
                     }else
                     {
-                        
+                        System.Console.WriteLine($"The Minotaur striked you right in your shins! (You take {enemy.Damage} damage)");
+                        hero.Health -= enemy.Damage;
                     }
                 }
+
+                System.Console.WriteLine($"You now have {hero.Health} HP!");
+                System.Console.WriteLine($"The minotaur now has {enemy.Health} HP!");
+
+                Console.ReadLine();
+            }
+
+            if (hero.Health <= 0)
+            {
+                Console.Clear();
+                
+                System.Console.WriteLine("You bleed your last drop of blood, and you fall to the ground.");
+                Console.ReadLine();
+                
+                hero.Location = "lose";
+            }else if (enemy.Health <= 0)
+            {
+                Console.Clear();
+
+                System.Console.WriteLine("You stabbed the Minotaur through the heart, its lifeless body falls to the ground.");
+                Console.ReadLine();
+                
+                hero.Location = "win";
             }
 
 
 
-
-
-            hero.Location = "win";
-            hero.Location = "lose";
+            
         }
 
         static void Win (Hero hero)
         {
+            System.Console.WriteLine("Congratulations! You slayed the Minotaur and got out of the house!");
+            Console.ReadLine();
             hero.Location = "gameover";
         }
 
         static void Lose (Hero hero)
         {
+            System.Console.WriteLine("You got slain by the Minotaur and failed your quest...");
+            Console.ReadLine();
             hero.Location = "gameover";
         }
 
         static void GameOver (Hero hero)
         {
+            Console.Clear();
+            System.Console.WriteLine("Game Over!");
+            Console.ReadLine();
+
             hero.Location = "quit";
         }
 
@@ -283,6 +317,27 @@ namespace TextAdventure
                         return false;
                 }
             }
+        }
+
+        static void EnemyMove(Enemy enemy)
+        {
+            int attackChoice = RollD6();
+
+            if (attackChoice <= 2)
+            {
+                Console.WriteLine("The Minotaur swings at your head!");
+                enemy.Move = "headattack";
+            }else if (attackChoice <= 4 && attackChoice >= 3)
+            {
+                Console.WriteLine("The Minotaur strikes at your legs!");
+                enemy.Move = "legattack";
+            }else if (attackChoice >= 5)
+            {
+                Console.WriteLine("The Minotaur lashes out towards your torso!");
+                enemy.Move = "torsoattack";
+            }
+
+            Console.ReadLine();
         }
 
         static int RollD6()
@@ -320,23 +375,6 @@ namespace TextAdventure
             Console.Clear();
         }
 
-        static void EnemyMove(Enemy enemy)
-        {
-            if (RollD6() <= 2)
-            {
-                Console.WriteLine("The Minotaur swings at your head!");
-                enemy.Move = "headattack";
-            }else if (RollD6() <= 4 && RollD6() >= 3)
-            {
-                Console.WriteLine("The Minotaur strikes at your legs!");
-                enemy.Move = "legattack";
-            }else if (RollD6() >= 5)
-            {
-                Console.WriteLine("The Minotaur lashes out towards your torso!");
-                enemy.Move = "torsoattack";
-            }
-
-            Console.ReadLine();
-        }
+        
     }
 }
