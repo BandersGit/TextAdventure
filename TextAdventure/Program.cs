@@ -177,11 +177,11 @@ namespace TextAdventure
                     Console.WriteLine("A cold shiver runs down your spine.");
                     hero.Items.Add("cursedamulet");
                 }
+                Console.ReadLine();
             }
 
-            Console.ReadLine();
             Console.Clear();
-            Console.WriteLine("You leave the corpse an continue into the next room.");
+            Console.WriteLine("You leave the corpse and continue into the next room.");
             Console.ReadLine();
 
             hero.Location = "backoutside";
@@ -315,7 +315,16 @@ namespace TextAdventure
             Console.Clear();
             Console.WriteLine("Game Over!");
             Console.ReadLine();
-            hero.Location = "quit";
+            if (AskYesOrNo("Do you want to play again?"))
+            {
+                hero.Items.Clear();
+                hero.Health = 100;
+                hero.Damage = 50;
+                hero.Location = "newgame";
+            }else
+            {
+                hero.Location = "quit";
+            }
         }
 
         static string Ask(string question)
