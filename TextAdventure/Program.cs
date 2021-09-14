@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Security.Cryptography;
+using System;
 
 namespace TextAdventure
 {
@@ -30,6 +31,15 @@ namespace TextAdventure
                 }else if (hero.Location == "thirdroom")
                 {
                     ThirdRoom(hero);
+                }else if (hero.Location == "chickenroom")
+                {
+                    ChickenRoom(hero);
+                }else if (hero.Location == "anotherlockedroom")
+                {
+                    AnotherLockedRoom(hero);
+                }else if (hero.Location == "chestroom")
+                {
+                    ChestRoom(hero);
                 }else if (hero.Location == "backoutside")
                 {
                     BackOutside(hero);
@@ -122,8 +132,7 @@ namespace TextAdventure
 
             if (rightOrLeft == "right" && hero.Items.Contains("key"))
             {
-                hero.Location = "lockedroom";
-                hero.Items.Remove("Key");   
+                hero.Location = "lockedroom";  
             }else
             {
                 hero.Location = "thirdroom";
@@ -132,6 +141,8 @@ namespace TextAdventure
 
         static void LockedRoom(Hero hero)
         {
+            hero.Items.Remove("key");
+
             Console.Clear();
             Console.WriteLine("You had to use the key to get into the room. " +
                               "Inside the locked room you find a shiny sword!");
@@ -184,6 +195,116 @@ namespace TextAdventure
             Console.WriteLine("You leave the corpse and continue into the next room.");
             Console.ReadLine();
 
+            hero.Location = "chickenroom";
+        }
+
+        static void ChickenRoom(Hero hero)     //New room
+        {
+            Console.Clear();
+            Console.WriteLine("In front of you in the next room is another stone table!");
+            Console.ReadLine();
+            System.Console.WriteLine("This time it has a whole roasted chicken on it!");
+            Console.WriteLine("");
+
+            if (AskYesOrNo("Do you want to pick up the chicken?"))
+            {
+                Console.Clear();
+                Console.WriteLine("You pick up the roasted chicken and continue into the next room.");
+                Console.ReadLine();
+
+                hero.Items.Add("chicken");
+            }else
+            {
+                Console.Clear();
+                Console.WriteLine("You leave the chicken on the table and continue into the next room.");
+                Console.ReadLine();
+            }
+
+            hero.Location = "anotherlockedroom";
+        }
+
+        static void AnotherLockedRoom(Hero hero)    //New room
+        {
+            Console.Clear();
+            System.Console.WriteLine("In the next room, you come across two doors, however one is locked.");
+            Console.ReadLine();
+            System.Console.WriteLine("If you still have a key, you can use it on the locked door.");
+            System.Console.WriteLine("");
+
+            bool key = AskYesOrNo("Do you have a key?");
+
+            if (key && hero.Items.Contains("key"))
+            {
+                System.Console.WriteLine("Great!");
+                Console.ReadLine();
+
+                if (AskYesOrNo("Do you want to use the key?") && hero.Items.Contains("key"))
+                {
+                    Console.Clear();
+                    System.Console.WriteLine("You used the key to unlock the door!");
+                    Console.ReadLine();
+
+                    hero.Items.Remove("key");
+
+                    hero.Location = "chestroom";
+                }else
+                {
+                    Console.Clear();
+                    System.Console.WriteLine("You did not use the key!");
+                    System.Console.WriteLine("So you took the other door instead.");
+                    Console.ReadLine();
+
+                    hero.Location = "backoutside";
+                }
+            }else if (key && !hero.Items.Contains("key"))
+            {
+                Console.Clear();
+                System.Console.WriteLine("You searched for the key in your backpack, but ultimately you found nothing.");
+                System.Console.WriteLine("So you took the other door instead.");
+                Console.ReadLine();
+
+                hero.Location = "backoutside";
+            }else if (!key)
+            {
+                Console.Clear();
+                System.Console.WriteLine("Alas you do not have a key.");
+                System.Console.WriteLine("So you took the other door instead.");
+                Console.ReadLine();
+
+                hero.Location = "backoutside";
+            }
+            
+        }
+
+        static void ChestRoom(Hero hero)    //New room
+        {
+            Console.Clear();
+            System.Console.WriteLine("Inside the room you find a chest!");
+            System.Console.WriteLine("You opened the chest and found a rusty claymore.");
+            Console.ReadLine();
+
+            if (AskYesOrNo("Do you want to pick up the claymore?"))
+            {
+                Console.Clear();
+                System.Console.WriteLine("You pick up the claymore and leave your wooden sword behind.");
+                Console.ReadLine();
+
+                hero.Items.Remove("woodensword");
+                hero.Items.Add("claymore");
+
+                Console.Clear();
+                System.Console.WriteLine("You approach the door to the next room...");
+                Console.ReadLine();
+            }else
+            {
+                Console.Clear();
+                System.Console.WriteLine("You decide not to pick up the claymore");
+                Console.ReadLine();
+                Console.Clear();
+                System.Console.WriteLine("You approach the door to the next room...");
+                Console.ReadLine();
+            }
+
             hero.Location = "backoutside";
         }
 
@@ -197,9 +318,9 @@ namespace TextAdventure
 
         static void BossFight(Hero hero)
         {
-            ItemEffect(hero);
-
             Enemy enemy = new Enemy();
+
+            ItemEffect(hero,enemy);
 
             while (hero.Health > 0 && enemy.Health > 0)
             {
@@ -298,7 +419,7 @@ namespace TextAdventure
 
         static void Win (Hero hero)
         {
-            Console.WriteLine("Congratulations! You slayed the Minotaur and got out of the house!");
+            Console.WriteLine($"Congratulations {hero.Name}! You slayed the Minotaur and completed your quest!");
             Console.ReadLine();
             hero.Location = "gameover";
         }
@@ -382,15 +503,30 @@ namespace TextAdventure
             Console.ReadLine();
         }
 
-        static void ItemEffect(Hero hero)
+        static void ItemEffect(Hero hero, Enemy enemy)
         {
+            if (hero.Items.Contains("chicken"))
+            {
+                System.Console.WriteLine("The Minotaur seems to really want to get the chicken that you picked up!");
+                Console.ReadLine();
+                System.Console.WriteLine("It will be more freocious (Its damage increased to 25)");
+                Console.ReadLine();
+                enemy.Damage = 25;
+            }
+
+
+
             if (hero.Items.Contains("shinysword"))
             {
                 hero.Damage = 100;
             }else if (hero.Items.Contains("knife"))
             {
                 hero.Damage = 75;
+            }else if (hero.Items.Contains("claymore"))
+            {
+                hero.Damage = 75;
             }
+        
 
             if (hero.Items.Contains("blessedamulet"))
             {
