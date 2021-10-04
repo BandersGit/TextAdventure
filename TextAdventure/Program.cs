@@ -14,7 +14,7 @@ namespace TextAdventure
             Console.ReadLine();
 
             Hero hero = new Hero();
-            while (hero.Location != "quit")
+            while (hero.Location != "quit") //"Main Loop" that switches between rooms until the game ends
             {
                 if (hero.Location == "newgame")
                 {
@@ -334,7 +334,9 @@ namespace TextAdventure
                 {
                     action = Ask("That is not not an option, please try again:");
                 }
+
                 Console.Clear();
+
                 if (action == "parry")
                 {
                     if (enemy.Move == "torsoattack")
@@ -351,6 +353,7 @@ namespace TextAdventure
                         Console.WriteLine($"The Minotaurs swing hits you in the side of the head! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
+
                 }else if (action == "duck")
                 {
                     if (enemy.Move == "headattack")
@@ -366,6 +369,7 @@ namespace TextAdventure
                         Console.WriteLine($"The Minotaur scrapes your torso! (You take {enemy.Damage} damage)");
                         hero.Health -= enemy.Damage;
                     }
+
                 }else if (action == "jump")
                 {
                     if (enemy.Move == "legattack")
@@ -382,8 +386,10 @@ namespace TextAdventure
                         hero.Health -= enemy.Damage;
                     }
                 }
+
                 Console.ReadLine();
                 Console.Clear();
+
                 if (hero.Health < 0)
                 {
                     hero.Health = 0;
@@ -436,7 +442,8 @@ namespace TextAdventure
             Console.Clear();
             Console.WriteLine("Game Over!");
             Console.ReadLine();
-            if (AskYesOrNo("Do you want to play again?"))
+
+            if (AskYesOrNo("Do you want to play again?")) //Resets hero stats if game is restarted
             {
                 hero.Items.Clear();
                 hero.Health = 100;
@@ -448,7 +455,7 @@ namespace TextAdventure
             }
         }
 
-        static string Ask(string question)
+        static string Ask(string question) //Takes in a question from a method with a question string
         {
             string response;
             do 
@@ -456,10 +463,11 @@ namespace TextAdventure
                 Console.WriteLine(question);
                 response = Console.ReadLine().Trim().ToLower();
             } while (response == "");
+
             return response;
         }
 
-        static bool AskYesOrNo(string question)
+        static bool AskYesOrNo(string question) //Gets a bool from an answer to a question
         {
             while (true)
             {
@@ -483,7 +491,7 @@ namespace TextAdventure
             return roll;
         }
 
-        static void EnemyMove(Enemy enemy)
+        static void EnemyMove(Enemy enemy) //Randomizes the move the enemy makes
         {
             int attackChoice = RollD6();
 
@@ -503,7 +511,7 @@ namespace TextAdventure
             Console.ReadLine();
         }
 
-        static void ItemEffect(Hero hero, Enemy enemy)
+        static void ItemEffect(Hero hero, Enemy enemy)  //Applies the effects from teh weapons
         {
             if (hero.Items.Contains("chicken"))
             {
